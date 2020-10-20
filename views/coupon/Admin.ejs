@@ -1,0 +1,31 @@
+
+<section class="hero">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              Q-Pon
+            </h1>
+            <h2 class="subtitle">
+              Redeem your coins for dinning coupons
+            </h2>
+            <table class="table is-striped is-bordered">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Restaurant</th>
+                        <th></th>
+                    </tr>
+                    <% coupons.forEach( function(coupon){ %>
+                     <tr>
+                          <td><%=coupon.id%></td>
+                          <td><%=coupon.title%></td>
+                          <td><%=coupon.restaurant%></td>
+                          <td><a href="update/<%=coupon.id%>">upadte</a></td>
+                      </tr>
+                  <% }); %>
+                </table>
+          </div>
+        </div>
+      
+      </section>
+     

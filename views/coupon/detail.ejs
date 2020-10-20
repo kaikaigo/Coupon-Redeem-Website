@@ -1,0 +1,21 @@
+<% coupons.forEach( function(coupon) { %>
+<div class="tile is-ancestor">
+        <div class="tile is-6">
+                <figure class="image ">
+                <img src="<%=coupon.image %>" alt="Placeholder image">
+                </figure>
+        </div>
+        <div class="tile">
+                <div class="content">
+                        <ul>
+                          <li><strong><%=coupon.restaurant%></strong></li>
+                          <li><strong><%=coupon.title%></strong></li>
+                          <li> <strong>Coins:</strong> <%=coupon.coins%></li>
+                          <li><strong>Address:</strong> <%= coupon.mall%>,<% coupon.region%></li>
+                          <li> <strong>Valid Till:</strong> <%= coupon.date%></li>
+                          <li><%=coupon.detail%></li>
+                        </ul>
+                </div>
+        </div> 
+      </div>
+      <% }); %>

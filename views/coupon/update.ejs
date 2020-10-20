@@ -1,0 +1,118 @@
+<% coupon.forEach( function(c){ %>
+<form action="" method="POST" name="upda">
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input" name="title" value="<%=c.title%>" required>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Restaurant</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input" name="restaurant" value="<%=c.restaurant%>" required>
+          </div>
+        </div>
+  
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Region</label>
+              <div class="control">
+                <div class="select">
+                  <select name="region">
+                    <option>HK Island</option>
+                    <option>Kowloon</option>
+                    <option>New Territories</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Mall</label>
+              <div class="control">
+                <div class="select">
+                  <select name="mall">
+                    <option>IFC Mall</option>
+                    <option>Pacific Place</option>
+                    <option>Times Square</option>
+                    <option>Elements</option>
+                    <option>Harbour City</option>
+                    <option>Festival Walk</option>
+                    <option>MegaBox</option>
+                    <option>APM</option>
+                    <option>New Town Plaza</option>
+                    <option> Tsuen Wan Plaza</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Image</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input" name="image" value="<%=c.image%>">
+          </div>
+        </div>
+        <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-danger" onclick="del()">Delete</button>
+                </div>
+              </div>
+
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Quota</label>
+          <div class="control">
+            <input class="input" type="number" placeholder="Text input" name="quota" value="<%=c.quota%>" required>
+          </div>
+        </div>
+  
+        <div class="field">
+          <label class="label">Coins</label>
+          <div class="control">
+            <input class="input" type="number" placeholder="Text input" name="coins" value="<%=c.coins%>" required>
+          </div>
+  
+          <div class="field">
+            <label class="label">Deal Valid Till</label>
+            <div class="control">
+              <input class="input" type="date" placeholder="Text input" name="date" value="<%=c.date%>">
+            </div>
+  
+            <div class="field">
+              <label class="label">Detail</label>
+              <div class="control">
+                <textarea class="textarea " placeholder="" rows="3" name="detail" ><%=c.detail%></textarea>
+              </div>
+            </div>
+  
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-link" onclick="sub()">Submit</button>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  </form>
+  <script>
+      
+      function del(){
+        document.upda.action="../delete/<%=c.id%>";
+        document.upda.submit();
+      }
+
+      function sub(){
+        document.upda.action="<%=c.id%>";
+        document.upda.submit();
+      }
+     
+
+  </script>
+   <% }); %>

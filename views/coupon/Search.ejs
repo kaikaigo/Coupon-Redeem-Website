@@ -1,0 +1,171 @@
+<div class="box">
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Q-Pon
+                </h1>
+                <h2 class="subtitle">
+                    Redeem your coins for dinning coupons
+                </h2>
+            </div>
+        </div>
+    </section>
+    <div class="tile is-ancestor">
+
+        <div class="tile is-vertical is-8">
+            <div class="tile">
+                   
+                   <% coupons.forEach( function(coupon){ %>
+                <div class="tile is-parent is-vertical" >
+                        <article class="tile is-child box ">
+                                <div class="card">
+                                  <div class="card-image">
+                                    <figure class="image is-4by3">
+                                      <a href="/detail/<%=coupon.id%>"  ><img src="<%=coupon.image %>" alt="Placeholder image"></a> 
+                                    </figure>
+                                  </div>
+                                  <div class="card-content">
+                                    <div class="media">
+                                      <div class="media-content">
+                                        <p class="title is-4"><%= coupon.restaurant %></p>
+                                      </div>
+                                    </div>
+                    
+                                    <div class="content">
+                                      <%= coupon.detail %>
+                                      <br>
+                                      coins:<%= coupon.coins %>
+                                      <br>
+                    
+                                    </div>
+                                  </div>
+                                </div>
+                              </article>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+        <div class="tile is-vertical is-4">
+            <form action="/search" method="POST">
+                <div class="field">
+                    <label class="label">Region</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="region" id="region">
+                                <option>HK Island</option>
+                                <option>Kowloon</option>
+                                <option>New Territories</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Max Coins</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Text input" name="maxCoins" id="maxCoins" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Min Coins</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Text input" name="minCoins" id="minCoins" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Deal Valid Till</label>
+                    <div class="control">
+                        <input class="input" type="date" placeholder="Text input" name="date" id="date" required>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link">Submit</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    <nav class="pagination" role="navigation" aria-label="pagination">
+        <a class="pagination-previous" id="previousButton">Previous</a>
+        <a class="pagination-next" id="nextButton">Next page</a>
+        <ul class="pagination-list">
+            <li>
+                <a class="pagination-link" id="firstLink">1</a>
+            </li>
+            <li>
+                <span class="pagination-ellipsis">&hellip;</span>
+            </li>
+            <li>
+                <a class="pagination-link" id="previousLink">45</a>
+            </li>
+            <li>
+                <a class="pagination-link is-current" id="currentLink">46</a>
+            </li>
+            <li>
+                <a class="pagination-link" id="nextLink">47</a>
+            </li>
+            <li>
+                <span class="pagination-ellipsis">&hellip;</span>
+            </li>
+            <li>
+                <a class="pagination-link" id="lastLink">86</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script>
+        function setPagination() {
+    
+            var previousButton = document.getElementById("previousButton");
+            var nextButton = document.getElementById("nextButton");
+            var currentLink = document.getElementById("currentLink");
+            var previousLink = document.getElementById("previousLink");
+            var nextLink = document.getElementById("nextLink");
+            var firstLink = document.getElementById("firstLink");
+            var lastLink = document.getElementById("lastLink");
+    
+            var numOfRecords = parseInt("<%= numOfRecords %>");
+            var limit = Math.max(parseInt("<%= req.query.limit %>"), 2) || 2;
+            var offset = Math.max(parseInt("<%= req.query.offset %>"), 0) || 0;
+    
+            var baseUrl = "/search?limit=" + limit + "&offset=";
+            
+           
+            
+           
+            firstLink.href = baseUrl + 0;
+            previousButton.href = baseUrl + (offset - limit);
+            previousLink.href = baseUrl + (offset - limit);
+            currentLink.href = baseUrl + offset;
+            nextLink.href = baseUrl + (offset + limit);
+            nextButton.href = baseUrl + (offset + limit);
+            lastLink.href = baseUrl + (Math.ceil(numOfRecords / limit) - 1) * limit;
+                  
+            var currentPageNumber = Math.floor(offset / limit) + 1;
+    
+            previousLink.innerHTML = currentPageNumber - 1;
+            currentLink.innerHTML = currentPageNumber;
+            nextLink.innerHTML = currentPageNumber + 1;
+            lastLink.innerHTML = Math.ceil(numOfRecords / limit); 
+    
+            if (offset < limit) {
+                previousButton.setAttribute("disabled", true);
+                previousButton.href = "";
+                previousLink.style.display = "none";
+            }
+    
+            if (offset + limit >= numOfRecords) {
+                nextButton.setAttribute("disabled", true);
+                nextButton.href = "";
+                nextLink.style.display = "none";
+            }
+        }
+    
+        setPagination();
+    
+    </script>

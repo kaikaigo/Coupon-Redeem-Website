@@ -1,0 +1,62 @@
+<div class="box">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Q-Pon
+        </h1>
+        <h2 class="subtitle">
+          Redeem your coins for dinning coupons
+        </h2>
+      </div>
+    </div>
+  </section>
+  <div class="columns">
+    <div class="column">
+      HK Island
+    </div>
+    <div class="column">
+      Kowloon
+    </div>
+    <div class="column">
+      New Territories
+    </div>
+  </div>
+
+  <div class="tile is-ancestor">
+    <% rs.forEach( function(r){ %>
+    <div class="tile is-vertical is-4">
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+          <% r.forEach( function(hc){ %>
+          <article class="tile is-child box ">
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <a href="/detail/<%=hc.id%>"  ><img src="<%=hc.image %>" alt="Placeholder image"></a> 
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4"><%= hc.restaurant %></p>
+                  </div>
+                </div>
+
+                <div class="content">
+                  <%= hc.detail %>
+                  <br>
+                  coins:<%= hc.coins %>
+                  <br>
+
+                </div>
+              </div>
+            </div>
+          </article>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+</div>
