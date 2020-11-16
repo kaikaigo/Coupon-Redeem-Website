@@ -14,8 +14,33 @@
                           <li><strong>Address:</strong> <%= coupon.mall%>,<% coupon.region%></li>
                           <li> <strong>Valid Till:</strong> <%= coupon.date%></li>
                           <li><%=coupon.detail%></li>
+                          <li> <button class="button is-primary" onclick="redeem('<%=coupon.id%>')">Redeem</button></li>
                         </ul>
                 </div>
         </div> 
       </div>
       <% }); %>
+
+      <script>
+              async function redeem(id) {
+        var r = confirm("Confirm Redeem?");
+        var url = "redeem/" + id;
+       alert(url)
+        if (r) {
+            var response = await fetch(url, {
+                method: "post"
+            });
+            console.log(response)
+            if (response.ok) {
+                var html = await response.text();
+                alert('123');
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+
+        } else {
+            alert("cancelled");
+        }
+    };
+      </script>
+     

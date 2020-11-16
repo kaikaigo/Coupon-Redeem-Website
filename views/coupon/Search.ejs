@@ -12,42 +12,14 @@
         </div>
     </section>
     <div class="tile is-ancestor">
-
         <div class="tile is-vertical is-8">
-            <div class="tile">
+            <div class="tile" id="pdata">
                    
-                   <% coupons.forEach( function(coupon){ %>
-                <div class="tile is-parent is-vertical" >
-                        <article class="tile is-child box ">
-                                <div class="card">
-                                  <div class="card-image">
-                                    <figure class="image is-4by3">
-                                      <a href="/detail/<%=coupon.id%>"  ><img src="<%=coupon.image %>" alt="Placeholder image"></a> 
-                                    </figure>
-                                  </div>
-                                  <div class="card-content">
-                                    <div class="media">
-                                      <div class="media-content">
-                                        <p class="title is-4"><%= coupon.restaurant %></p>
-                                      </div>
-                                    </div>
-                    
-                                    <div class="content">
-                                      <%= coupon.detail %>
-                                      <br>
-                                      coins:<%= coupon.coins %>
-                                      <br>
-                    
-                                    </div>
-                                  </div>
-                                </div>
-                              </article>
-                </div>
-                <% }); %>
+                   
             </div>
         </div>
         <div class="tile is-vertical is-4">
-            <form action="/search" method="POST">
+            <form action="/search" method="POST" onsubmit="submitForm(2,0);return false">
                 <div class="field">
                     <label class="label">Region</label>
                     <div class="control">
@@ -119,7 +91,7 @@
     </nav>
 </div>
 <script>
-        function setPagination() {
+        function setPagination(limit,offset,count,region,maxCoins,minCoins,date) {
     
             var previousButton = document.getElementById("previousButton");
             var nextButton = document.getElementById("nextButton");
@@ -129,22 +101,28 @@
             var firstLink = document.getElementById("firstLink");
             var lastLink = document.getElementById("lastLink");
     
-            var numOfRecords = parseInt("<%= numOfRecords %>");
-            var limit = Math.max(parseInt("<%= req.query.limit %>"), 2) || 2;
-            var offset = Math.max(parseInt("<%= req.query.offset %>"), 0) || 0;
+            var numOfRecords = parseInt(count);
+           console.log(numOfRecords);
     
-            var baseUrl = "/search?limit=" + limit + "&offset=";
+            //var baseUrl = "/search?limit=" + limit + "&offset=";
             
            
             
-           
-            firstLink.href = baseUrl + 0;
-            previousButton.href = baseUrl + (offset - limit);
-            previousLink.href = baseUrl + (offset - limit);
-            currentLink.href = baseUrl + offset;
-            nextLink.href = baseUrl + (offset + limit);
-            nextButton.href = baseUrl + (offset + limit);
-            lastLink.href = baseUrl + (Math.ceil(numOfRecords / limit) - 1) * limit;
+            firstLink.onclick =function(){fetchPage(limit,0,region,maxCoins,minCoins,date)};
+            previousButton.onclick = function(){fetchPage(limit,offset - limit,region,maxCoins,minCoins,date)};
+            previousLink.onclick = function(){fetchPage(limit,offset - limit,region,maxCoins,minCoins,date)};
+            currentLink.onclick = function(){fetchPage(limit,offset,region,maxCoins,minCoins,date)};
+            nextLink.onclick =function(){fetchPage(limit,offset + limit,region,maxCoins,minCoins,date)};
+            nextButton.onclick = function(){fetchPage(limit,offset + limit,region,maxCoins,minCoins,date)};
+            lastLink.onclick = function(){fetchPage(limit,(Math.ceil(numOfRecords / limit) - 1) * limit),region,maxCoins,minCoins,date};
+
+            // firstLink.href = baseUrl + 0;
+            // previousButton.href = baseUrl + (offset - limit);
+            // previousLink.href = baseUrl + (offset - limit);
+            // currentLink.href = baseUrl + offset;
+            // nextLink.href = baseUrl + (offset + limit);
+            // nextButton.href = baseUrl + (offset + limit);
+            // lastLink.href = baseUrl + (Math.ceil(numOfRecords / limit) - 1) * limit;
                   
             var currentPageNumber = Math.floor(offset / limit) + 1;
     
@@ -155,17 +133,66 @@
     
             if (offset < limit) {
                 previousButton.setAttribute("disabled", true);
-                previousButton.href = "";
+              //  previousButton.href = "";
                 previousLink.style.display = "none";
+            }
+            else{
+                previousButton.removeAttribute("disabled");
+                previousLink.style.display = "block";
             }
     
             if (offset + limit >= numOfRecords) {
                 nextButton.setAttribute("disabled", true);
-                nextButton.href = "";
+               // nextButton.href = "";
                 nextLink.style.display = "none";
+            }
+            else{
+                nextButton.removeAttribute("disabled");
+                nextLink.style.display = "block";
             }
         }
     
-        setPagination();
+      
     
     </script>
+     <script>
+         async function submitForm(limit,offset){
+            var myselected= document.getElementById("region");
+            var index=myselected.selectedIndex;
+            var region=myselected.options[index].text;
+            var maxCoins=document.getElementById("maxCoins").value;
+            var minCoins=document.getElementById("minCoins").value;
+            var date=document.getElementById("date").value;
+           fetchPage(limit,offset,region,maxCoins,minCoins,date);
+         }
+
+        async function fetchPage(limit,offset,region,maxCoins,minCoins,date){
+            var response = await fetch("/search?limit="+limit+"&offset="+offset+"&region="+region+"&maxCoins="+maxCoins+"&minCoins="+minCoins+"&date="+date,{
+                method:"post"
+            });
+            if(response.ok){
+                
+                var coupons = await response.json();
+                console.log(coupons);
+                var count=coupons[2];
+                var dynamaticCode='';
+                for(i=0;i<coupons.length-1;i++){
+                    dynamaticCode+= '<div class="tile is-parent is-vertical"><article class="tile is-child box "><div class="card"><div class="card-image"><figure class="image is-4by3">';
+                    dynamaticCode+='<a href="/detail/'+coupons[i].id+'"><img src="'+coupons[i].image+'" alt="Placeholder image"></a>';
+                    dynamaticCode+='</figure>  </div><div class="card-content"><div class="media"><div class="media-content">';
+                    dynamaticCode+='<p class="title is-4">'+coupons[i].restaurant +'</p>';
+                    dynamaticCode+='</div></div><div class="content">'+coupons[i].detail+' <br>'+'coins:'+coupons[i].coins;
+                    dynamaticCode+=' <br>                     </div></div></div></article></div>'
+                }
+                
+                document.querySelector('#pdata').innerHTML=dynamaticCode;
+                setPagination(limit,offset,count,region,maxCoins,minCoins,date);   
+            }
+            else{
+                alert(response.status+":"+response.statusText);
+            }
+           
+       
+        }
+
+     </script>

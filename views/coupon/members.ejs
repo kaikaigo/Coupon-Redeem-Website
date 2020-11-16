@@ -1,0 +1,24 @@
+<section class="hero">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              Q-Pon
+            </h1>
+            <h2 class="subtitle">
+              Redeem your coins for dinning coupons
+            </h2>
+            <table class="table is-striped is-bordered">
+                    <tr>
+                        <th>Members</th>
+                    </tr>
+                    <% members.forEach( function(member){ %>
+                     <tr>
+                          <td><%=member.username%></td>
+                      </tr>
+                  <% }); %>
+                </table>
+          </div>
+        </div>
+      
+      </section>
+     

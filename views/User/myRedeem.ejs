@@ -1,0 +1,59 @@
+<div class="box">
+        <section class="hero">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                Q-Pon
+              </h1>
+              <h2 class="subtitle">
+                Redeem your coins for dinning coupons
+              </h2>
+            </div>
+          </div>
+        </section>
+        <div class="columns">
+          <div class="column">
+           Redeemed Coupons <%=coupons.size %>
+          </div>
+          <div class="column">
+           Current Balance: <%=coins%> Coins
+          </div>
+        </div>
+      
+        <div class="tile is-ancestor">
+          <% coupons.forEach( function(hc){ %>
+          <div class="tile is-vertical is-4">
+            <div class="tile">
+              <div class="tile is-parent is-vertical">
+                
+                <article class="tile is-child box ">
+                  <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-4by3">
+                        <a href="/detail/<%=hc.id%>"  ><img src="<%=hc.image %>" alt="Placeholder image"></a> 
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <p class="title is-4"><%= hc.restaurant %></p>
+                        </div>
+                      </div>
+      
+                      <div class="content">
+                        <%= hc.detail %>
+                        <br>
+                        coins:<%= hc.coins %>
+                        <br>
+      
+                      </div>
+                    </div>
+                  </div>
+                </article>
+               
+              </div>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>

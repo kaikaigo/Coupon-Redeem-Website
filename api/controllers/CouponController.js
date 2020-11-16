@@ -60,7 +60,6 @@ admin:async function(req,res){
 update:async function(req,res){
     if (req.method == "GET") {
     var thatCoupon = await Coupon.find({where:{ id : req.params.id}});
-    console.log(thatCoupon);
     return res.view('coupon/update',{coupon:thatCoupon});
     }
     else{
@@ -71,37 +70,34 @@ update:async function(req,res){
 
 delete:async function(req,res){
     var deletedCoupon = await Coupon.destroyOne(req.params.id);
-
+    console.log(deletedCoupon);
     if (!deletedCoupon) return res.notFound();
 
-    return res.redirect('../home');
+    if (req.wantsJSON){
+        return res.status(204).send();	    // for ajax request
+    } else {
+        return res.redirect('/');			// for normal request
+    }
 },
 
-search:async function(req,res){
+redeemed: async function(req,res){
+    var consultants = await Coupon.find({id:req.params.id}).populate("consultants");;
+        console.log(consultants);
+        var thosemembers=consultants[0].consultants;
+        return res.view('coupon/members',{ members:thosemembers });
+},
+
+search: async function(req,res){
     
+    if(req.wantsJSON){
     var whereClause = {};
-    if(req.method=='POST'){
-    if (req.body.region) whereClause.region = { contains: req.body.region };
-    console.log(req.body);
-    var maxc = parseInt(req.body.maxCoins);
-    var minc =parseInt(req.body.minCoins);
+    if (req.query.region) whereClause.region = { contains: req.query.region };
+    var maxc = parseInt(req.query.maxCoins);
+    var minc =parseInt(req.query.minCoins);
     if (isNaN(maxc)) maxc=0;
     if (isNaN(minc)) minc=0;
     whereClause.coins={'<=': maxc,'>=': minc};
-    whereClause.date={'<=':req.body.date};
-    }
-   
-    if(req.method=='GET'&&1==-1){
-        
-          var region1=req.query.region;
-       
-        var maxCoins=parseInt(req.query.maxCoins);
-        var minCoins=parseInt(req.query.minCoins);
-        var date=req.query.date;
-        whereClause.region = { contains: region1 };
-        whereClause.coins={'<=': maxCoins,'>=': minCoins};
-        whereClause.date={'<=':date};
-    }
+    whereClause.date={'<=':req.query.date};
     var limit = Math.max(req.query.limit, 2) || 2;
     var offset = Math.max(req.query.offset, 0) || 0;
     var thoseCoupons = await Coupon.find({
@@ -110,14 +106,18 @@ search:async function(req,res){
         skip: offset
         
     });
-    var thoseCoupons2 = await Coupon.find({
-    	where: whereClause,
-        
-    });
+    var thoseCoupons2=await Coupon.find({where: whereClause,});
+    count = thoseCoupons2.length;
+    thoseCoupons[2]=count;
     console.log(thoseCoupons);
-    var count = await thoseCoupons2.length;
-    return res.view('coupon/search', { coupons: thoseCoupons,numOfRecords: count});
-    
+        return res.json(thoseCoupons);
+
+    }
+    else{
+        return res.view('coupon/search');
+    }
+
+
 },
 
 

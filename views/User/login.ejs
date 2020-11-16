@@ -1,0 +1,74 @@
+
+        
+        <div class="columns">
+                <div class="column">
+                </div>
+                <div class="column">
+                        <section class="hero">
+                                <div class="hero-body">
+                                  <div class="container">
+                                    <h1 class="title">
+                                      Q-Pon
+                                    </h1>
+                                    <h2 class="subtitle">
+                                      Redeem your coins for dinning coupons
+                                    </h2>
+                                  </div>
+                                </div>
+                              </section>
+                        <form action="/user/login" method="POST" onsubmit="submitForm(this);return false">
+                            <div class="field is-center" >
+                              <p class="control has-icons-left has-icons-right">
+                                <input class="input" type="text" placeholder="Username" name="username">
+                                <span class="icon is-small is-left">
+                                  <i class="fas fa-user"></i>
+                                </span>
+                              </p>
+                            </div>
+                            <div class="field is-center">
+                              <p class="control has-icons-left">
+                                <input class="input" type="password" placeholder="Password" name="password">
+                                <span class="icon is-small is-left">
+                                  <i class="fas fa-lock"></i>
+                                </span>
+                              </p>
+                            </div>
+                            <div class="field is-center">
+                              <p class="control">
+                                <button class="button is-success" text-align: center;>
+                                  Login
+                                </button>
+                              </p>
+                            </div>
+                        </form>
+           
+                </div>
+                <div class="column">
+                 
+                </div>
+              </div>
+                
+
+
+<script>
+    async function submitForm(formElem) {
+        var r = confirm("Confirm Login?");
+        if(r){
+        var response = await fetch(formElem.action, {
+            method: formElem.method,
+            body: new FormData(formElem),
+        });
+
+        if (response.ok) {
+            var user = await response.json();
+            alert("Welcome back, " + user.username);
+            location.assign("/");
+        } else if (response.status == 401) {
+            var msg = await response.json();
+            alert(msg);
+        } else {
+            alert(response.statusText);
+        }
+    }
+    };
+</script>

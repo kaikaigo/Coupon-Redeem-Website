@@ -1,5 +1,5 @@
 /**
- * Coupon.js
+ * User.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -12,47 +12,41 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-
-    title:{
-      type:"string"
+    username: {
+      type: "string",
+      unique: true,
+      required: true
     },
-    restaurant:{
-      type:"string"
+    
+    password: {
+      type: "string",
+      required:true
     },
-    region:{
-      type:"string"
-    },
-    mall:{
-      type:"string"
-    },
-    image:{
-      type:"string"
-    },
-    quota:{
-      type:"number"
+    role: {
+      type: 'string',
+      isIn: ['admin', 'member', 'nMember'],
+      defaultsTo: 'nMember'
     },
     coins:{
-      type:"number"
+      type:'number'
     },
-    date:{
-      type:"string"
-    },
-    detail:{
-      type:"string"
-    },
+
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
-
+    
 
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    consultants: {
-      collection: 'User',
-      via: 'clients'
-    }
+    clients: {
+      collection: 'Coupon',
+      via: 'consultants'
+    },
   },
-
+  customToJSON: function() {
+    // Return a shallow copy of this record with the password removed.
+    return _.omit(this, ['password'])
+  },
 };
 

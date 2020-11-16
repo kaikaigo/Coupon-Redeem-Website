@@ -18,5 +18,16 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
-
+  CouponController: {
+    create: 'isAdmin',
+    add:'isAdmin',
+    delete:'isAdmin',
+    update:'isAdmin',
+    admin:'isAdmin',
+    redeemed:'isAdmin',
+  },
+  UserController:{
+    redeem:'isMember',
+    myRedeem:'isMember',
+  }
 };

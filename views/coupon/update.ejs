@@ -1,5 +1,5 @@
 <% coupon.forEach( function(c){ %>
-<form action="" method="POST" name="upda">
+<form action="coupon/<%=c.id%>" method="POST" name="upda" onsubmit="return false">
     <div class="columns">
       <div class="column">
         <div class="field">
@@ -60,7 +60,7 @@
         </div>
         <div class="field is-grouped">
                 <div class="control">
-                  <button class="button is-danger" onclick="del()">Delete</button>
+                  <button class="button is-danger" onclick="del('<%=c.id%>')">Delete</button>
                 </div>
               </div>
 
@@ -93,26 +93,57 @@
             </div>
   
             <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-link" onclick="sub()">Submit</button>
-              </div>
+                <p class="control">
+                    <button class="button is-success" onclick="update(this,'<%=c.id%>')">
+                      submit
+                    </button>
+                  </p>
             </div>
           </div>
   
         </div>
   </form>
   <script>
-      
-      function del(){
-        document.upda.action="../delete/<%=c.id%>";
-        document.upda.submit();
-      }
+      async function del(id) {
+        var r = confirm("Confirm Delete?");
+        
+        if (r) {
+            var response = await fetch("/coupon/" + id, {
+                method: "DELETE"
+            });
 
-      function sub(){
-        document.upda.action="<%=c.id%>";
-        document.upda.submit();
-      }
-     
+            if (response.ok) {
+              alert("Coupon deleted.");
+              location.assign("/");
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+
+        } else {
+            alert("cancelled");
+        }
+    };
+      
+      
+
+    async function update(formElem,id) {
+      var r = confirm("Confirm Update?");
+      if(r){
+    var response = await fetch("coupon/"+id, {
+    method: 'PUT',
+    body: new FormData(formElem),
+    });
+  if (response.ok) {
+    alert("Coupon updated.");
+              location.assign("/");
+  } else if (response.status == 401) {
+    var msg = await response.json();
+    alert(msg);
+  } else {
+    alert(response.statusText);
+  }
+}
+};
 
   </script>
    <% }); %>

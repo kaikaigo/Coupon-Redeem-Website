@@ -26,5 +26,16 @@ module.exports.bootstrap = async function() {
   //   // etc.
   // ]);
   // ```
+  sails.bcrypt = require('bcryptjs');
+  var salt = await sails.bcrypt.genSalt(10);
+  var hash = await sails.bcrypt.hash('123456', salt);
 
+  if (await User.count() > 0) {
+    return;
+}
+await User.createEach([
+    { username: "admin", password: hash ,role:'admin'},
+    { username: "kaikaigo", password: hash ,role:'member',coins:50},
+    // etc.
+]);
 };

@@ -20,18 +20,33 @@ module.exports.routes = {
   ***************************************************************************/
 
   //'/': { view: 'pages/homepage' },
+  //home method
   'Get /':'CouponController.home',
   'Get /home':'CouponController.home',
   'Get /create':'CouponController.create',
-  'Post /create':'CouponController.create',
+  //Restful
+  'Post /coupon':'CouponController.create',
+  'Delete /coupon/:id':'CouponController.delete',
+  'Put /coupon/:id':'CouponController.update',
+  //admin method 
   'Get /admin':'CouponController.admin',
+  'GET /redeemed/:id':'CouponController.redeemed',
+  'Post /detail/redeem/:id': 'UserController.redeem',
   'Get /detail/:id':'CouponController.detail',
   'Get /update/:id':'CouponController.update',
-  'Post /update/:id':'CouponController.update',
-  'Post /delete/:id':'CouponController.delete',
   'Get /search':'CouponController.search',
   'Post /search':'CouponController.search',
-
+  //User sign up
+  'GET /user/sign': 'UserController.sign',
+  'POST /user/sign': 'UserController.sign',
+  //User login
+  'GET /user': 'UserController.login',
+  'GET /user/login': 'UserController.login',
+  'GET /user/logout': 'UserController.logout',
+  'POST /user/login': 'UserController.login',
+  'POST /user/logout': 'UserController.logout',
+  'Get /myRedeem':'UserController.myredeem',
+ 
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

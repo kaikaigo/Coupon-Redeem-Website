@@ -8,7 +8,7 @@
 
     <%/* If you want to discourage search engines from indexing this site, uncomment the following line: */%>
     <%/* <meta name="robots" content="noindex"> */%>
-
+    
 
     <!--
         Stylesheets and Preprocessors
@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
   </head>
 
-  <body>
+  <body >
       <nav class="navbar" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
             <a class="navbar-item" >
@@ -60,12 +60,15 @@
               <a class="navbar-item" href="/search">
                   Search
                 </a>
-                <a class="navbar-item" href="/create">
+                <a class="navbar-item" href="/create" id="create" style="display:none">
                   Create
                 </a>
-                <a class="navbar-item" href="admin">  
+                <a class="navbar-item" href="/admin" style="display:none" id="admin">  
                    Admin
                 </a>
+                <a class="navbar-item" href="/myRedeem" style="display:none" id="redeem" >  
+                  My Redeemed Coupons
+               </a>
               
         
                
@@ -77,11 +80,15 @@
             <div class="navbar-end">
               <div class="navbar-item">
                 <div class="buttons">
-                  <a class="button is-primary">
+                  <a class="button is-success"  id="sign" href="/User/sign">
                     <strong>Sign up</strong>
                   </a>
-                  <a class="button is-light">
+                  <a class="button is-primary" href="/User/login" id="login">
                     Log in
+                  </a>
+                  <span class="tag is-light" id="name" style="display:none"></span>
+                  <a class="button is-danger" href="/User/logout" id="logout" style="display:none">
+                    Log out
                   </a>
                 </div>
               </div>
@@ -162,5 +169,35 @@
     <script src="/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript">
+      
+        async  function lo(){
+          var username="<%= req.session.username%>";
+          var role="<%= req.session.role%>";
+          
+          if(role=='admin'){
+           document.getElementById('login').style.display="none";
+           document.getElementById('logout').style="";
+           document.getElementById('admin').style="";
+           document.getElementById('name').style="";
+           document.getElementById('name').innerHTML="Hi"+" "+username;
+           document.getElementById('sign').style.display="none";
+           document.getElementById('create').style="";
+          }
+          if(role=='member'){
+           document.getElementById('login').style.display="none";
+           document.getElementById('logout').style="";
+           document.getElementById('redeem').style="";
+           document.getElementById('name').style="";
+           document.getElementById('name').innerHTML="Hi"+" "+username;
+           document.getElementById('sign').style.display="none";
+          }
+          
+        }
+
+        
+
+          window.onload = lo();
+      </script>
   </body>
 </html>
