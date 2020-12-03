@@ -106,7 +106,12 @@ module.exports = {
         var thatcoins = user.coins;
         var thosecoupons=clients[0].clients;
         console.log(thosecoupons);
+        if(req.wantsJSON){
+            return res.json(thosecoupons);
+        }
+        else{
         return res.view('User/myRedeem',{ coupons:thosecoupons,coins:thatcoins });
+        }
        
     }
 };

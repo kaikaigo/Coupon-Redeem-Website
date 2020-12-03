@@ -9,7 +9,7 @@ module.exports = {
 
   
 home:async function(req,res){
-
+console.log("laile");
 var Hkislandcs = await Coupon.find({
     where: { region: 'HK Island' },
     limit:2,
@@ -30,10 +30,22 @@ var Newcs = await Coupon.find({
     limit:2,
     skip:0
 });
-
 var resaurs = await [Hkislandcs,Kowlooncs,Newcs];
-return res.view('Coupon/home',{ rs:resaurs });
+if(req.wantsJSON){
+    return res.json(resaurs);
+}
+else{
+    return res.view('Coupon/home',{ rs:resaurs });
+}
 },
+
+show:async function(req,res){
+    console.log("laile");
+    var coupons = await Coupon.find({  
+    }
+    );
+        return res.json(coupons);
+    },
 
 create:async function(req,res){
 
@@ -116,6 +128,26 @@ search: async function(req,res){
     else{
         return res.view('coupon/search');
     }
+
+
+},
+mobileSearch: async function(req,res){
+    console.log("123");
+    var whereClause = {};
+    if (req.query.mall) whereClause.mall = { contains: req.query.mall };
+    var maxc = parseInt(req.query.maxCoins);
+    var minc =parseInt(req.query.minCoins);
+    if (isNaN(maxc)) maxc=1000000;
+    if (isNaN(minc)) minc=0;
+    whereClause.coins={'<=': maxc,'>=': minc};
+    var thoseCoupons = await Coupon.find({
+    	where: whereClause,
+    });
+    
+        return res.json(thoseCoupons);
+
+    
+    
 
 
 },

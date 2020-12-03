@@ -52,7 +52,9 @@
 
 <script>
     async function submitForm(formElem) {
+        console.log(formElem);
         var r = confirm("Confirm Login?");
+        
         if(r){
         var response = await fetch(formElem.action, {
             method: formElem.method,

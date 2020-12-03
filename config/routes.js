@@ -24,6 +24,7 @@ module.exports.routes = {
   'Get /':'CouponController.home',
   'Get /home':'CouponController.home',
   'Get /create':'CouponController.create',
+  'GET /show':'CouponController.show',
   //Restful
   'Post /coupon':'CouponController.create',
   'Delete /coupon/:id':'CouponController.delete',
@@ -36,6 +37,7 @@ module.exports.routes = {
   'Get /update/:id':'CouponController.update',
   'Get /search':'CouponController.search',
   'Post /search':'CouponController.search',
+  'GET /mobileSearch':'CouponController.mobileSearch',
   //User sign up
   'GET /user/sign': 'UserController.sign',
   'POST /user/sign': 'UserController.sign',
