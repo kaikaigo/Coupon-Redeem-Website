@@ -143,13 +143,7 @@ mobileSearch: async function(req,res){
     var thoseCoupons = await Coupon.find({
     	where: whereClause,
     });
-    
         return res.json(thoseCoupons);
-
-    
-    
-
-
 },
 
 
