@@ -81,7 +81,7 @@ module.exports = {
         console.log('123')
        var coupon = await Coupon.findOne({id:req.params.id});
        var user =await User.findOne({username:req.session.username});
-       if(req.session.coins>=coupon.coins){
+       if(req.session.coins>=coupon.coins&&coupon.quota>=1){
            console.log('456')
             await User.addToCollection(user.id, 'clients').members(coupon.id);
             await Coupon.addToCollection(coupon.id, 'consultants').members(user.id);
@@ -95,7 +95,7 @@ module.exports = {
                 return res.redirect('/');			// for normal request
             }
        }else{
-        if (!match) return res.status(401).json("Not enough coins");
+        if (!match) return res.status(401).json("Not enough coins or not enough quota or unlogin");
        }
     },
 

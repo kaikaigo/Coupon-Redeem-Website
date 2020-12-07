@@ -103,6 +103,7 @@
   
         </div>
   </form>
+  <% }); %>
   <script>
       async function del(id) {
         var r = confirm("Confirm Delete?");
@@ -129,13 +130,13 @@
     async function update(formElem,id) {
       var r = confirm("Confirm Update?");
       if(r){
-    var response = await fetch("coupon/"+id, {
+    var response = await fetch("/coupon/"+id, {
     method: 'PUT',
     body: new FormData(formElem),
     });
   if (response.ok) {
     alert("Coupon updated.");
-              location.assign("/");
+    location.assign("/");
   } else if (response.status == 401) {
     var msg = await response.json();
     alert(msg);
@@ -146,4 +147,4 @@
 };
 
   </script>
-   <% }); %>
+  

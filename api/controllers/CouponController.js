@@ -75,8 +75,9 @@ update:async function(req,res){
     return res.view('coupon/update',{coupon:thatCoupon});
     }
     else{
-        var updatedCoupon = await   Coupon.updateOne(req.params.id).set(req.body)
-        return res.redirect('../home');
+        console.log("update");
+        var updatedCoupon = await Coupon.updateOne(req.params.id).set(req.body)
+        return res.ok();
     }
 },
 
@@ -139,7 +140,7 @@ mobileSearch: async function(req,res){
     var minc =parseInt(req.query.minCoins);
     if (isNaN(maxc)) maxc=1000000;
     if (isNaN(minc)) minc=0;
-    whereClause.coins={'<=': maxc,'>=': minc};
+    whereClause.coins={'<=': maxc,'>': minc};
     var thoseCoupons = await Coupon.find({
     	where: whereClause,
     });
